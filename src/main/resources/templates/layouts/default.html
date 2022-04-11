@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="stylesheet" href="/css/bootstrap.mic.css" th:href="@{/css/bootstrap.min.css}"/>
+    <script src="/js/jquery-3.3.1.slim.min.js" th:src="@{/js/jquery-3.3.1.slim.min.js}"></script>
+    <script src="/js/popper.min.js" th:src="@{/js/popper.min.js}"></script>
+    <script src="/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}">></script>
     <title th:replace="${view} :: title">Layout template</title>
 </head>
 <body>
     <div th:replace="fragments/header :: header">Header</div>
     <div th:replace="${view} :: content">Content</div>
-    <div th:replace="fragments/footer">Footer</div>
+    <div th:replace="fragments/footer :: footer">Footer</div>
 </body>
 </html>

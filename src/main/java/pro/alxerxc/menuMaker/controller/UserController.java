@@ -26,12 +26,12 @@ public class UserController {
     }
 
     @GetMapping("")
-    public String showUsersRoot() {
-        return REDIRECT_TO_INDEX_VIEW;
+    public String showUsersRoot(Model model) {
+        return showUserIndex(model);
     }
 
     @GetMapping("/index")
-    public String showUserList(Model model) {
+    public String showUserIndex(Model model) {
         model.addAttribute("users", userService.findAll());
         return INDEX_VIEW;
     }

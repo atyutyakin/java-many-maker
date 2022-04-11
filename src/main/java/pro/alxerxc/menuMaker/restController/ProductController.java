@@ -7,7 +7,7 @@ import pro.alxerxc.menuMaker.service.ProductService;
 
 import java.util.List;
 
-@RestController
+//@RestController
 @RequestMapping("/api/product")
 public class ProductController {
     private final ProductService productService;
