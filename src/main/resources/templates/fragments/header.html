@@ -6,13 +6,9 @@
     <title>Add User</title>
 </head>
 <body>
-    <div class="container">
-        <h1>This is my brand-new application, devoted to diet planning!</h1>
-
-    </div>
-    <nav th:fragment="header" class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav th:fragment="header" class="navbar navbar-expand-lg navbar-light bg-light text-primary">
         <div class="container-fluid">
-            <a href="#" th:href="@{/}" class="navbar-brand" th:text="#{spring.application.name}">App name</a>
+            <a href="#" th:href="@{/}" class="navbar-brand" th:text="${@appInfo.getName()}">App name</a>
         </div>
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
