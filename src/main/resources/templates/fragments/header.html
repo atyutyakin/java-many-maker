@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Add User</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+    <title>Header title</title>
 </head>
 <body>
-    <nav th:fragment="header" class="navbar navbar-expand-lg navbar-light bg-light text-primary">
+    <nav th:fragment="header" class="navbar navbar-expand-lg navbar-light bg-light text-primary border-bottom justify-content-center justify-content-lg-start">
         <div class="container-fluid">
             <a href="#" th:href="@{/}" class="navbar-brand" th:text="${@appInfo.getName()}">App name</a>
         </div>
@@ -17,10 +19,22 @@
             <div class="navbar-nav">
                 <a href="#" th:href="@{/users}" class="nav-item nav-link active">Users</a>
                 <a href="#" th:href="@{/products}" class="nav-item nav-link">Products</a>
-                <a href="#" class="nav-item nav-link disabled" tabindex="-1">Not implemented yet</a>
+                <a href="#" class="nav-item nav-link">Users</a>
             </div>
-            <div class="navbar-nav ms-auto">
-                <a href="#" class="nav-item nav-link">Login</a>
+            <form class="col-3 mb-3 mb-lg-0 me-lg-3">
+                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+            </form>
+            <div class="dropdown text-end">
+                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle"
+                   id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">USER</a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser1">
+                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                </ul>
             </div>
         </div>
     </nav>

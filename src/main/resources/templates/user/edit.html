@@ -3,21 +3,32 @@
         xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:fragment="title" th:text="${isNew} ? 'Add User' : 'Edit User'">Add/Edit User</title>
+    <title th:fragment="title" th:text="${isNew} ? 'Add New User' : 'Edit User'">Add/Edit User</title>
 </head>
 <body>
     <div class="container" th:fragment="content">
-        <h1 th:text="${isNew} ? 'Add User' : 'Edit User'">Add/Edit User</h1>
+        <h3 th:text="${isNew} ? 'Add New User' : 'Edit User'">Add/Edit User</h3>
         <form action="#" method="post"
               th:action="${isNew} ? @{/users/add} : @{/users/update/{id}(id=${user.id})}"
               th:object="${user}">
-            <label for="name">Name</label>
-            <input type="text" th:field="*{name}" id="name" placeholder="Name"/>
-            <span th:if="${#fields.hasErrors('name')}" th:error="*{name}"></span>
-            <label for="email">Email</label>
-            <input type="text" th:field="*{email}" id="email" placeholder="Email"/>
-            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
-            <input type="submit" value="Add/Update User" th:value="${isNew} ? 'Add User' : 'Edit User'"/>
+            <div class="mb-3" th:unless="${isNew}">
+                <label class="form-label" for="id">ID</label>
+                <input class="form-control" type="text" th:field="*{id}" id="id" placeholder="ID" disabled/>
+                <span class="form-text text-danger" th:if="${#fields.hasErrors('id')}" th:error="*{id}"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="name">Name</label>
+                <input class="form-control" type="text" th:field="*{name}" id="name" placeholder="Name"/>
+                <span class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:error="*{name}"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-control" type="text" th:field="*{email}" id="email" placeholder="Email"/>
+                <span class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+            <div class="mb-3">
+                <input class="btn btn-primary" type="submit" value="Add/Update User" th:value="${isNew} ? 'Add User' : 'Edit User'"/>
+            </div>
         </form>
     </div>
 </body>
