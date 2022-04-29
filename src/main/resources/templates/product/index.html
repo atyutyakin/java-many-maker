@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+</head>
+<body>
+    <div class="container" th:fragment="content">
+        <h3>Products</h3>
+        <table class="table table-light table-hover">
+            <thead class="table-info">
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Nutrients Info</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="product : ${products}" th:object="${product}">
+                    <td th:text="*{name}"></td>
+                    <td th:text="*{description}"></td>
+                    <td th:text="*{nutrientsInfo}"></td>
+                    <td>
+                        <a class="me-3" th:href="@{/products/{id}(id=*{id})}"><span class="bi-info-square"></span></a>
+                        <a class="me-3" th:href="@{/products/edit/{id}(id=*{id})}"><span class="bi-pencil"></span></a>
+                        <a class="me-3" href="#" th:attr="data-href=@{/products/delete/{id}(id=*{id})}"
+                           data-bs-toggle="modal" data-bs-target="#confirm-delete"><span class="bi-trash"></span></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p><a th:href="@{/products/add}">Add a new product</a></p>
+
+        <!-- Delete-modal dialog -->
+        <div class="m-4">
+            <div id="confirm-delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>Confirm delete</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete selected item?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+                            <a class="btn btn-danger btn-ok">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $('#confirm-delete').on('show.bs.modal', function(e) {
+                    $(this).find('.btn-ok').attr('href',  $(e.relatedTarget).data('href'));
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>

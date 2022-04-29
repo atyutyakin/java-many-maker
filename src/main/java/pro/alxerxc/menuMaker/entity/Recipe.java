@@ -3,22 +3,17 @@ package pro.alxerxc.menuMaker.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Objects;
 
 @Entity
-@Table(name = "product")
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
-@ToString
-public class Product implements Persistable<Long>{
+public class Recipe implements Persistable<Long>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,20 +29,5 @@ public class Product implements Persistable<Long>{
 
     @Embedded
     @NotNull
-    @Valid
     private NutrientsInfo nutrientsInfo;
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || ! (o instanceof Product)) return false;
-        Product product = (Product) o;
-        return id.equals(product.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

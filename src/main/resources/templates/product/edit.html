@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:fragment="title" th:text="${isNew} ? 'Add New Product' : 'Edit Product'">Add/Edit Product</title>
+</head>
+<body>
+    <div class="container" th:fragment="content" th:object="${product}">
+        <h3 th:text="${isNew} ? 'Add New Product' : 'Edit Product'">Add/Edit Product</h3>
+        <form action="#" method="post"
+              th:action="${isNew} ? @{/products/add} : @{/products/update/{id}(id=*{id})}">
+            <div class="form-outline mb-3" th:unless="${isNew}">
+                <label class="form-label" for="id">ID</label>
+                <input class="form-control" type="text" th:field="*{id}" id="id" placeholder="ID" disabled/>
+                <span class="form-text text-danger" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></span>
+            </div>
+            <div class="form-outline mb-3">
+                <label class="form-label" for="name">Name</label>
+                <input class="form-control" type="text" th:field="*{name}" id="name" placeholder="Name"/>
+                <span class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            </div>
+            <div class="form-outline mb-3">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" th:field="*{description}" id="description" placeholder="Description" rows="4"/>
+                <span class="form-text text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+            </div>
+            <div class="row form-outline mb-3">
+                <div class="col-lg-3">
+                    <label class="form-label" for="calories">Calories</label>
+                    <input class="form-control" type="text" th:field="*{nutrientsInfo.calories}" id="calories" placeholder="Calories"/>
+                    <span class="form-text text-danger"
+                          th:if="${#fields.hasErrors('nutrientsInfo.calories')}"
+                          th:errors="*{nutrientsInfo.calories}"></span>
+                </div>
+                <div class="col-lg-3">
+                    <label class="form-label" for="fats">Fats</label>
+                    <input class="form-control" type="text" th:field="*{nutrientsInfo.fats}" id="fats" placeholder="Fats"/>
+                    <span class="form-text text-danger"
+                          th:if="${#fields.hasErrors('nutrientsInfo.fats')}"
+                          th:errors="*{nutrientsInfo.fats}"></span>
+                </div>
+                <div class="col-lg-3">
+                    <label class="form-label" for="fats">Carbohydrates</label>
+                    <input class="form-control" type="text" th:field="*{nutrientsInfo.carbohydrates}" id="carbohydrates" placeholder="Carbohydrates"/>
+                    <span class="form-text text-danger"
+                          th:if="${#fields.hasErrors('nutrientsInfo.carbohydrates')}"
+                          th:errors="*{nutrientsInfo.carbohydrates}"></span>
+                </div>
+                <div class="col-lg-3">
+                    <label class="form-label" for="fats">Proteins</label>
+                    <input class="form-control" type="text" th:field="*{nutrientsInfo.proteins}" id="proteins" placeholder="Proteins"/>
+                    <span class="form-text text-danger"
+                          th:if="${#fields.hasErrors('nutrientsInfo.proteins')}"
+                          th:error="*{nutrientsInfo.proteins}"></span>
+                </div>
+            </div>
+            <div class="form-outline mb-3">
+                <input class="btn btn-primary" type="submit" value="Add/Update Product" th:value="${isNew} ? 'Add' : 'Update'"/>
+                <a class="btn btn-secondary" href="#" th:href="@{/products}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
