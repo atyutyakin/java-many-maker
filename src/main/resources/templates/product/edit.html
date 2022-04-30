@@ -28,28 +28,28 @@
             <div class="row form-outline mb-3">
                 <div class="col-lg-3">
                     <label class="form-label" for="calories">Calories</label>
-                    <input class="form-control" type="text" th:field="*{nutrientsInfo.calories}" id="calories" placeholder="Calories"/>
+                    <input class="form-control" type="text" th:field="*{nutrientsInfo.calories}" id="calories" placeholder="0"/>
                     <span class="form-text text-danger"
                           th:if="${#fields.hasErrors('nutrientsInfo.calories')}"
                           th:errors="*{nutrientsInfo.calories}"></span>
                 </div>
                 <div class="col-lg-3">
                     <label class="form-label" for="fats">Fats</label>
-                    <input class="form-control" type="text" th:field="*{nutrientsInfo.fats}" id="fats" placeholder="Fats"/>
+                    <input class="form-control" type="text" th:field="*{nutrientsInfo.fats}" id="fats" placeholder="0"/>
                     <span class="form-text text-danger"
                           th:if="${#fields.hasErrors('nutrientsInfo.fats')}"
                           th:errors="*{nutrientsInfo.fats}"></span>
                 </div>
                 <div class="col-lg-3">
                     <label class="form-label" for="fats">Carbohydrates</label>
-                    <input class="form-control" type="text" th:field="*{nutrientsInfo.carbohydrates}" id="carbohydrates" placeholder="Carbohydrates"/>
+                    <input class="form-control" type="text" th:field="*{nutrientsInfo.carbohydrates}" id="carbohydrates" placeholder="0"/>
                     <span class="form-text text-danger"
                           th:if="${#fields.hasErrors('nutrientsInfo.carbohydrates')}"
                           th:errors="*{nutrientsInfo.carbohydrates}"></span>
                 </div>
                 <div class="col-lg-3">
                     <label class="form-label" for="fats">Proteins</label>
-                    <input class="form-control" type="text" th:field="*{nutrientsInfo.proteins}" id="proteins" placeholder="Proteins"/>
+                    <input class="form-control" type="text" th:field="*{nutrientsInfo.proteins}" id="proteins" placeholder="0"/>
                     <span class="form-text text-danger"
                           th:if="${#fields.hasErrors('nutrientsInfo.proteins')}"
                           th:error="*{nutrientsInfo.proteins}"></span>

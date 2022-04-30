@@ -7,19 +7,24 @@
 </head>
 <body>
     <div class="container" th:fragment="content" th:object="${product}">
-        <h3 th:text="*{name}">Product Name</h3>
-        <div class="mb-3">
-            <label class="form-label" for="id">ID</label>
-            <input class="form-control" type="text" th:field="*{id}" id="id" placeholder="ID" disabled/>
+        <h3 class="mb-4" th:text="'Details of ' + *{name}">Product Name</h3>
+        <div class="row mb-3">
+            <span class="col-lg-2">ID:</span>
+            <span class="col-lg-10 border" th:text="*{id}"></span>
         </div>
-        <div class="mb-3">
-            <label class="form-label" for="name">Name</label>
-            <input class="form-control" type="text" th:field="*{name}" id="name" placeholder="Name"/>
+        <div class="row mb-3">
+            <span class="col-lg-2">Name:</span>
+            <span class="col-lg-10 border" th:text="*{name}"></span>
         </div>
-        <div class="mb-3">
-            <label class="form-label" for="description">Description</label>
-            <input class="form-control" type="text" th:field="*{description}" id="description" placeholder="Description"/>
+        <div class="row mb-3">
+            <span class="col-lg-2">Description:</span>
+            <span class="col-lg-10 border" th:text="*{description}"></span>
         </div>
+        <div class="row mb-3">
+            <span class="col-lg-2">Nutrients Info:</span>
+            <span class="col-lg-10 border" th:text="*{nutrientsInfo}"></span>
+        </div>
+        <a class="btn btn-secondary mb-3" th:href="@{/products}">Back to products list</a>
     </div>
 </body>
 </html>
