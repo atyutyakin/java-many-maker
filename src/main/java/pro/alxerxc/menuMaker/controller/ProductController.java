@@ -1,26 +1,36 @@
 package pro.alxerxc.menuMaker.controller;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pro.alxerxc.menuMaker.entity.Product;
-import pro.alxerxc.menuMaker.entity.User;
 import pro.alxerxc.menuMaker.service.ProductService;
+import pro.alxerxc.menuMaker.support.Pagination;
 
 import javax.validation.Valid;
 
 @Controller
+@ConfigurationProperties(prefix = "pro.alxerxc.menu-maker.controller")
 @RequestMapping("/products")
 public class ProductController {
-    private static final String REDIRECT_TO_INDEX_VIEW = "redirect:/products/index";
+    private static final String REDIRECT_TO_INDEX_VIEW = "redirect:/products/all";
     private static final String INDEX_VIEW = "/product/index";
     private static final String EDIT_VIEW = "/product/edit";
 
     private static final String VIEW_VIEW = "/product/view";
+
+    @Getter
+    @Setter
+    private int defaultPageSize = 15;
+
+    @Getter
+    @Setter
+    private int maxPaginationLinks = 10;
 
     private final ProductService productService;
 
@@ -28,14 +38,21 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("")
+    /*@GetMapping("")
     public String showProductsRoot(Model model) {
-        return showIndex(model);
-    }
+        return REDIRECT_TO_INDEX_VIEW;
+    }*/
 
-    @GetMapping("/index")
-    public String showIndex(Model model) {
-        model.addAttribute("products", productService.findAll());
+    @GetMapping(value = {"/all", ""})
+    public String showAllProducts(
+                @RequestParam(value = "search", required = false, defaultValue = "") String searchString,
+                @RequestParam(value = "page", required = false, defaultValue = "0") int pageIndex,
+                @RequestParam(value = "size", required = false, defaultValue = "0") int size,
+                @RequestParam(value = "sort", required = false, defaultValue = "name,asc") String[] sort,
+                Model model) {
+        Page<Product> productsPage = productService.getProductsPage(searchString, pageIndex, actualPageSize(size), sort);
+        model.addAttribute("products", productsPage.getContent());
+        model.addAttribute("pagination", Pagination.of(productsPage, maxPaginationLinks));
         return INDEX_VIEW;
     }
 
@@ -46,7 +63,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public String showDetails(@PathVariable("id") long id, Model model) {
+    public String showProductDetails(@PathVariable("id") long id, Model model) {
         model.addAttribute("product", productService.findById(id));
         System.out.println("reached this");
         return VIEW_VIEW;
@@ -87,5 +104,9 @@ public class ProductController {
 
     private void setIsNew(Model model) {
         model.addAttribute("isNew", Boolean.TRUE);
+    }
+
+    private int actualPageSize(int size) {
+        return (size != 0) ? size : defaultPageSize;
     }
 }

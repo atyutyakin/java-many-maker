@@ -10,7 +10,7 @@
 <body>
     <nav th:fragment="header" class="navbar navbar-expand-lg navbar-light bg-light text-primary border-bottom justify-content-center justify-content-lg-start">
         <div class="container-fluid">
-            <a href="#" th:href="@{/}" class="navbar-brand" th:text="${@appInfo.getName()}">App name</a>
+            <a href="#" th:href="@{/}" class="navbar-brand" th:text="${@appConfig.getName()}">App name</a>
         </div>
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
