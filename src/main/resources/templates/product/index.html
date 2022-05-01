@@ -12,63 +12,39 @@
         <table class="table table-light table-hover">
             <thead class="table-info">
                 <tr>
-                    <th>Name</th>
-                    <th>Description</th>
+                    <th>ID
+                        <a th:if="${!pagination.hasAscSorting('id')}" th:href="@{/products/all?sort=id,asc}"><span class="bi-sort-alpha-down"></span></a>
+                        <a th:if="${pagination.hasAscSorting('id')}" th:href="@{/products/all?sort=id,desc}"><span class="bi-sort-alpha-up"></span></a>
+                    </th>
+                    <th>Name
+                        <a th:if="${!pagination.hasAscSorting('name')}" th:href="@{/products/all?sort=name,asc}"><span class="bi-sort-alpha-down"></span></a>
+                        <a th:if="${pagination.hasAscSorting('name')}" th:href="@{/products/all?sort=name,desc}"><span class="bi-sort-alpha-up"></span></a>
+                    </th>
+                    <th>Description
+                        <a th:if="${!pagination.hasAscSorting('description')}" th:href="@{/products/all?sort=description,asc}"><span class="bi-sort-alpha-down"></span></a>
+                        <a th:if="${pagination.hasAscSorting('description')}" th:href="@{/products/all?sort=description,desc}"><span class="bi-sort-alpha-up"></span></a>
+                    </th>
                     <th>Nutrients Info</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="product : ${products}" th:object="${product}">
+                    <td th:text="*{id}"></td>
                     <td th:text="*{name}"></td>
                     <td th:text="*{description}"></td>
                     <td th:text="*{nutrientsInfo}"></td>
-                    <td>
-                        <a class="me-3" th:href="@{/products/{id}(id=*{id})}"><span class="bi-info-square"></span></a>
+                    <td th:replace="fragments/table :: rowActions ('/products')">
+                        <!--<a class="me-3" th:href="@{/products/{id}(id=*{id})}"><span class="bi-info-square"></span></a>
                         <a class="me-3" th:href="@{/products/edit/{id}(id=*{id})}"><span class="bi-pencil"></span></a>
                         <a class="me-3" href="#" th:attr="data-href=@{/products/delete/{id}(id=*{id})}"
-                           data-bs-toggle="modal" data-bs-target="#confirm-delete"><span class="bi-trash"></span></a>
+                           data-bs-toggle="modal" data-bs-target="#confirm-delete"><span class="bi-trash"></span></a>-->
                     </td>
                 </tr>
             </tbody>
         </table>
-
-        <nav class="paging" aria-label="Page navigation">
-            <ul class="pagination">
-                <li class="page-item" th:each="linkInfo : ${pagination.links}"
-                    th:classappend="(${linkInfo.isDisabled()} ? 'disabled' : '') + (${linkInfo.isActive()} ? 'active' : '')">
-                    <a class="page-link" href="#" th:href="@{/products/all?} + ${linkInfo.link}"
-                        th:text="${linkInfo.title}" tabindex="-1">Page Number</a>
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Delete-modal dialog -->
-        <div class="m-4">
-            <div id="confirm-delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5>Confirm delete</h5>
-                        </div>
-                        <div class="modal-body">
-                            <p>Are you sure you want to delete selected item?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
-                            <a class="btn btn-danger btn-ok">Delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script>
-            $(document).ready(function() {
-                $('#confirm-delete').on('show.bs.modal', function(e) {
-                    $(this).find('.btn-ok').attr('href',  $(e.relatedTarget).data('href'));
-                });
-            });
-        </script>
+        <nav th:replace="fragments/table :: pagination ('/products')"></nav>
+        <div th:replace="fragments/table :: deleteModalDialog"></div>
     </div>
 </body>
 </html>

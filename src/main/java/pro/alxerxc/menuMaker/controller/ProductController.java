@@ -10,7 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pro.alxerxc.menuMaker.entity.Product;
 import pro.alxerxc.menuMaker.service.ProductService;
-import pro.alxerxc.menuMaker.support.Pagination;
+import pro.alxerxc.menuMaker.support.PaginationAndSorting;
 
 import javax.validation.Valid;
 
@@ -38,11 +38,6 @@ public class ProductController {
         this.productService = productService;
     }
 
-    /*@GetMapping("")
-    public String showProductsRoot(Model model) {
-        return REDIRECT_TO_INDEX_VIEW;
-    }*/
-
     @GetMapping(value = {"/all", ""})
     public String showAllProducts(
                 @RequestParam(value = "search", required = false, defaultValue = "") String searchString,
@@ -50,9 +45,10 @@ public class ProductController {
                 @RequestParam(value = "size", required = false, defaultValue = "0") int size,
                 @RequestParam(value = "sort", required = false, defaultValue = "name,asc") String[] sort,
                 Model model) {
-        Page<Product> productsPage = productService.getProductsPage(searchString, pageIndex, actualPageSize(size), sort);
+        Page<Product> productsPage = productService.getProductsPage(searchString, pageIndex,
+                actualPageSize(size), PaginationAndSorting.sort(sort));
         model.addAttribute("products", productsPage.getContent());
-        model.addAttribute("pagination", Pagination.of(productsPage, maxPaginationLinks));
+        model.addAttribute("pagination", PaginationAndSorting.of(productsPage, maxPaginationLinks));
         return INDEX_VIEW;
     }
 
