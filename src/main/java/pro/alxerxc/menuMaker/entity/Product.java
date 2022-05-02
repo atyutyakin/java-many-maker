@@ -41,7 +41,7 @@ public class Product implements Persistable<Long>{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || ! (o instanceof Product)) return false;
+        if (! (o instanceof Product)) return false;
         Product product = (Product) o;
         return id.equals(product.id);
     }

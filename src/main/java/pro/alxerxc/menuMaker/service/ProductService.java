@@ -16,8 +16,7 @@ public class ProductService extends GenericCrudService<Product, Long> {
 
     public Page<Product> getProductsPage(String searchString, int pageIndex, int size, Sort sort) {
         PageRequest request = PageRequest.of(pageIndex, size, sort);
-        Page<Product> productsPage = getRepository().findAll(request);
-        return productsPage;
+        return getRepository().findAll(request);
     }
 
 }

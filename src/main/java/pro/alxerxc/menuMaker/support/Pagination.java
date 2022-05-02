@@ -13,11 +13,10 @@ import java.util.*;
 public class Pagination {
     private static final int DEFAULT_MAX_PAGINATION_LINKS = 5;
 
-    private Page page;
-    private Params params;
+    private final Page page;
+    private final Params params;
     private List<LinkInfo> pageLinks;
-    private int maxPaginationLinks;
-    private String sortAsString;
+    private final int maxPaginationLinks;
 
     public static Pagination of(Page page, Params params, int maxPaginationLinks) {
         return new Pagination(page, params, maxPaginationLinks);
@@ -65,7 +64,6 @@ public class Pagination {
         this.page = page;
         this.params = params;
         this.maxPaginationLinks = maxPaginationLinks;
-        this.sortAsString = params.sortAsString();
         generateLinks();
     }
 
@@ -103,7 +101,7 @@ public class Pagination {
 
     public boolean hasSorting(String property, String direction) {
         String pattern = property + "," + (!direction.isBlank() ? direction : "");
-        return Arrays.stream(params.sort()).filter(v -> v.startsWith(pattern)).count() > 0;
+        return Arrays.stream(params.sort()).anyMatch(v -> v.startsWith(pattern));
     }
 
     public boolean hasSorting(String property) {
@@ -192,15 +190,6 @@ public class Pagination {
                 return value.toArray(new String[0]);
             } else {
                 return new String[0];
-            }
-        }
-
-        public String sortAsString() {
-            List<String> value = getParamsMap().get("sort");
-            if (value != null) {
-                return String.join("&", value);
-            } else {
-                return "";
             }
         }
 
