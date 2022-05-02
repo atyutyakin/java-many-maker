@@ -13,18 +13,35 @@
             <thead class="table-info">
                 <tr>
                     <th>ID
-                        <a th:if="${!pagination.hasAscSorting('id')}" th:href="@{/products/all?sort=id,asc}"><span class="bi-sort-alpha-down"></span></a>
-                        <a th:if="${pagination.hasAscSorting('id')}" th:href="@{/products/all?sort=id,desc}"><span class="bi-sort-alpha-up"></span></a>
+                        <a th:href="@{/products/all?sort=id,} + (${pagination.hasSorting('id', 'asc')} ? 'desc' : 'asc')">
+                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('id', 'asc')} ? 'up' : 'down')"
+                                  th:classappend="${pagination.hasSorting('id')} ? 'bg-light border-primary' : ''"></span></a>
                     </th>
                     <th>Name
-                        <a th:if="${!pagination.hasAscSorting('name')}" th:href="@{/products/all?sort=name,asc}"><span class="bi-sort-alpha-down"></span></a>
-                        <a th:if="${pagination.hasAscSorting('name')}" th:href="@{/products/all?sort=name,desc}"><span class="bi-sort-alpha-up"></span></a>
+                        <a th:href="@{/products/all?sort=name,} + (${pagination.hasSorting('name', 'asc')} ? 'desc' : 'asc')">
+                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('name', 'asc')} ? 'up' : 'down')"
+                                  th:classappend="${pagination.hasSorting('name')} ? 'bg-light border-primary' : ''"></span></a>
                     </th>
-                    <th>Description
-                        <a th:if="${!pagination.hasAscSorting('description')}" th:href="@{/products/all?sort=description,asc}"><span class="bi-sort-alpha-down"></span></a>
-                        <a th:if="${pagination.hasAscSorting('description')}" th:href="@{/products/all?sort=description,desc}"><span class="bi-sort-alpha-up"></span></a>
+                    <th>Description</th>
+                    <th>Cal.
+                        <a th:href="@{/products/all?sort=nutrientsInfo.calories,} + (${pagination.hasSorting('nutrientsInfo.calories', 'asc')} ? 'desc' : 'asc')">
+                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.calories', 'asc')} ? 'up' : 'down')"
+                                  th:classappend="${pagination.hasSorting('nutrientsInfo.calories')} ? 'bg-light border-primary' : ''"></span></a>
+                    <th>Fat
+                        <a th:href="@{/products/all?sort=nutrientsInfo.fats,} + (${pagination.hasSorting('nutrientsInfo.fats', 'asc')} ? 'desc' : 'asc')">
+                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.fats', 'asc')} ? 'up' : 'down')"
+                                  th:classappend="${pagination.hasSorting('nutrientsInfo.fats')} ? 'bg-light border-primary' : ''"></span></a>
                     </th>
-                    <th>Nutrients Info</th>
+                    <th>Carb.
+                        <a th:href="@{/products/all?sort=nutrientsInfo.carbohydrates,} + (${pagination.hasSorting('nutrientsInfo.carbohydrates', 'asc')} ? 'desc' : 'asc')">
+                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.carbohydrates', 'asc')} ? 'up' : 'down')"
+                                  th:classappend="${pagination.hasSorting('nutrientsInfo.carbohydrates')} ? 'bg-light border-primary' : ''"></span></a>
+                    </th>
+                    <th>Prot.
+                        <a th:href="@{/products/all?sort=nutrientsInfo.proteins,} + (${pagination.hasSorting('nutrientsInfo.proteins', 'asc')} ? 'desc' : 'asc')">
+                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.proteins', 'asc')} ? 'up' : 'down')"
+                                  th:classappend="${pagination.hasSorting('nutrientsInfo.proteins')} ? 'bg-light border-primary' : ''"></span></a>
+                    </th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -33,13 +50,11 @@
                     <td th:text="*{id}"></td>
                     <td th:text="*{name}"></td>
                     <td th:text="*{description}"></td>
-                    <td th:text="*{nutrientsInfo}"></td>
-                    <td th:replace="fragments/table :: rowActions ('/products')">
-                        <!--<a class="me-3" th:href="@{/products/{id}(id=*{id})}"><span class="bi-info-square"></span></a>
-                        <a class="me-3" th:href="@{/products/edit/{id}(id=*{id})}"><span class="bi-pencil"></span></a>
-                        <a class="me-3" href="#" th:attr="data-href=@{/products/delete/{id}(id=*{id})}"
-                           data-bs-toggle="modal" data-bs-target="#confirm-delete"><span class="bi-trash"></span></a>-->
-                    </td>
+                    <td th:text="*{nutrientsInfo.calories}"></td>
+                    <td th:text="*{nutrientsInfo.fats}"></td>
+                    <td th:text="*{nutrientsInfo.carbohydrates}"></td>
+                    <td th:text="*{nutrientsInfo.proteins}"></td>
+                    <td th:replace="fragments/table :: rowActions ('/products')">Here goes actions</td>
                 </tr>
             </tbody>
         </table>

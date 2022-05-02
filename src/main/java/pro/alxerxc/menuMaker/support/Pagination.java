@@ -5,25 +5,23 @@ import lombok.Setter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 @Getter
-public class PaginationAndSorting {
+public class Pagination {
     private static final int DEFAULT_MAX_PAGINATION_LINKS = 5;
 
     private Page page;
     private List<LinkInfo> pageLinks;
     private int maxPaginationLinks;
     private String sortAsString;
+    private String searchPattern;
 
-    public static PaginationAndSorting of(Page page, int maxPaginationLinks) {
-        return new PaginationAndSorting(page, maxPaginationLinks);
+    public static Pagination of(Page page, String searchPattern, int maxPaginationLinks) {
+        return new Pagination(page, searchPattern, maxPaginationLinks);
     }
-    public static PaginationAndSorting of(Page page) {
-        return of(page, DEFAULT_MAX_PAGINATION_LINKS);
+    public static Pagination of(Page page, String searchPattern) {
+        return of(page, searchPattern, DEFAULT_MAX_PAGINATION_LINKS);
     }
 
     /** Creates Sort by given string array of property names and directions.
@@ -57,10 +55,11 @@ public class PaginationAndSorting {
         return Sort.by(orders);
     }
 
-    private PaginationAndSorting(Page page, int maxPaginationLinks) {
+    private Pagination(Page page, String searchPattern, int maxPaginationLinks) {
         this.page = page;
         this.maxPaginationLinks = maxPaginationLinks;
         this.sortAsString = sortParams();
+        this.searchPattern = searchPattern;
         generateLinks();
     }
 
@@ -96,7 +95,10 @@ public class PaginationAndSorting {
     }
 
     private String getLink(int pageIndex) {
-        return "page=" + pageIndex + "&size=" + page.getSize() + sortParams();
+        return "page=" + pageIndex
+                + "&size=" + page.getSize()
+                + sortParams()
+                + (!searchPattern.isBlank() ? "&search=" + searchPattern : "");
     }
 
     private String sortParams() {
@@ -110,13 +112,18 @@ public class PaginationAndSorting {
         return sb.toString();
     }
 
-    public boolean hasAscSorting(String property) {
-        return sortAsString.toLowerCase().contains("&sort=" + property + ",asc");
+    public boolean hasSorting(String property, String direction) {
+        String pattern = "&sort=" + property.toLowerCase()
+                + (!direction.isBlank() ? "," + direction.toLowerCase() : "");
+        return sortAsString.toLowerCase().contains(pattern);
+    }
+    public boolean hasSorting(String property) {
+        return hasSorting(property, "");
     }
 
     @Setter
     @Getter
-    public class LinkInfo {
+    public static class LinkInfo {
         private String link;
         private String title;
         private boolean active;
@@ -138,6 +145,58 @@ public class PaginationAndSorting {
             this.title = title;
             this.active = active;
             this.disabled = disabled;
+        }
+    }
+
+    @Getter
+    public static class Params {
+        private final Map<String, String> paramsMap;
+
+        public Params(Map<String, String> paramsAsMap) {
+            this.paramsMap = new HashMap(paramsAsMap);
+        }
+
+        public static Params of(Map<String, String> paramsAsMap) {
+            return new Params(paramsAsMap);
+        }
+
+        public Params put(String name, String value) {
+            Params newInstance = new Params(this.getParamsMap());
+            newInstance.getParamsMap().put(name, value);
+            return newInstance;
+        }
+
+        public Params remove(String name) {
+            Params newInstance = new Params(this.getParamsMap());
+            newInstance.getParamsMap().remove(name);
+            return newInstance;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            getParamsMap().forEach((k, v) -> {
+                if (sb.length() != 0) {
+                    sb.append("&");
+                }
+                sb.append(k + "=" + v);
+            });
+            return sb.toString();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Params params = (Params) o;
+
+            return paramsMap.equals(params.paramsMap);
+        }
+
+        @Override
+        public int hashCode() {
+            return paramsMap.hashCode();
         }
     }
 
