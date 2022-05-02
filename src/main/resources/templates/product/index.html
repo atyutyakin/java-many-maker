@@ -13,33 +13,33 @@
             <thead class="table-info">
                 <tr>
                     <th>ID
-                        <a th:href="@{/products/all?sort=id,} + (${pagination.hasSorting('id', 'asc')} ? 'desc' : 'asc')">
-                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('id', 'asc')} ? 'up' : 'down')"
+                        <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('id')}">
+                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('id', 'desc')} ? 'up' : 'down')"
                                   th:classappend="${pagination.hasSorting('id')} ? 'bg-light border-primary' : ''"></span></a>
                     </th>
                     <th>Name
-                        <a th:href="@{/products/all?sort=name,} + (${pagination.hasSorting('name', 'asc')} ? 'desc' : 'asc')">
-                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('name', 'asc')} ? 'up' : 'down')"
+                        <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('name')}">
+                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('name', 'desc')} ? 'up' : 'down')"
                                   th:classappend="${pagination.hasSorting('name')} ? 'bg-light border-primary' : ''"></span></a>
                     </th>
                     <th>Description</th>
                     <th>Cal.
-                        <a th:href="@{/products/all?sort=nutrientsInfo.calories,} + (${pagination.hasSorting('nutrientsInfo.calories', 'asc')} ? 'desc' : 'asc')">
-                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.calories', 'asc')} ? 'up' : 'down')"
+                        <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('nutrientsInfo.calories')}">
+                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.calories', 'desc')} ? 'up' : 'down')"
                                   th:classappend="${pagination.hasSorting('nutrientsInfo.calories')} ? 'bg-light border-primary' : ''"></span></a>
                     <th>Fat
-                        <a th:href="@{/products/all?sort=nutrientsInfo.fats,} + (${pagination.hasSorting('nutrientsInfo.fats', 'asc')} ? 'desc' : 'asc')">
-                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.fats', 'asc')} ? 'up' : 'down')"
+                        <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('nutrientsInfo.fats')}">
+                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.fats', 'desc')} ? 'up' : 'down')"
                                   th:classappend="${pagination.hasSorting('nutrientsInfo.fats')} ? 'bg-light border-primary' : ''"></span></a>
                     </th>
                     <th>Carb.
-                        <a th:href="@{/products/all?sort=nutrientsInfo.carbohydrates,} + (${pagination.hasSorting('nutrientsInfo.carbohydrates', 'asc')} ? 'desc' : 'asc')">
-                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.carbohydrates', 'asc')} ? 'up' : 'down')"
+                        <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('nutrientsInfo.carbohydrates')}">
+                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.carbohydrates', 'desc')} ? 'up' : 'down')"
                                   th:classappend="${pagination.hasSorting('nutrientsInfo.carbohydrates')} ? 'bg-light border-primary' : ''"></span></a>
                     </th>
                     <th>Prot.
-                        <a th:href="@{/products/all?sort=nutrientsInfo.proteins,} + (${pagination.hasSorting('nutrientsInfo.proteins', 'asc')} ? 'desc' : 'asc')">
-                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.proteins', 'asc')} ? 'up' : 'down')"
+                        <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('nutrientsInfo.proteins')}">
+                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.proteins', 'desc')} ? 'up' : 'down')"
                                   th:classappend="${pagination.hasSorting('nutrientsInfo.proteins')} ? 'bg-light border-primary' : ''"></span></a>
                     </th>
                     <th>Actions</th>

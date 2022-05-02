@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.*;
 
@@ -12,16 +14,16 @@ public class Pagination {
     private static final int DEFAULT_MAX_PAGINATION_LINKS = 5;
 
     private Page page;
+    private Params params;
     private List<LinkInfo> pageLinks;
     private int maxPaginationLinks;
     private String sortAsString;
-    private String searchPattern;
 
-    public static Pagination of(Page page, String searchPattern, int maxPaginationLinks) {
-        return new Pagination(page, searchPattern, maxPaginationLinks);
+    public static Pagination of(Page page, Params params, int maxPaginationLinks) {
+        return new Pagination(page, params, maxPaginationLinks);
     }
-    public static Pagination of(Page page, String searchPattern) {
-        return of(page, searchPattern, DEFAULT_MAX_PAGINATION_LINKS);
+    public static Pagination of(Page page, Params params) {
+        return of(page, params, DEFAULT_MAX_PAGINATION_LINKS);
     }
 
     /** Creates Sort by given string array of property names and directions.
@@ -30,6 +32,10 @@ public class Pagination {
      * @return tuned Sort object
      */
     public static Sort sort(String[] sortClauses) {
+        if (sortClauses.length == 0) {
+            return Sort.unsorted();
+        }
+
         // Flatten clauses array here - collect all order elements in one plain list
         // Because strings in array could be paired in one element like {"field1,asc", "field2,desc"} here,
         // or placed in adjacent elements: {"field", "asc"}
@@ -55,11 +61,11 @@ public class Pagination {
         return Sort.by(orders);
     }
 
-    private Pagination(Page page, String searchPattern, int maxPaginationLinks) {
+    private Pagination(Page page, Params params, int maxPaginationLinks) {
         this.page = page;
+        this.params = params;
         this.maxPaginationLinks = maxPaginationLinks;
-        this.sortAsString = sortParams();
-        this.searchPattern = searchPattern;
+        this.sortAsString = params.sortAsString();
         generateLinks();
     }
 
@@ -83,8 +89,9 @@ public class Pagination {
         List<Integer> pageIndices = new ArrayList<>(pagesToGenerateSet);
         for (int i = 0; i < pageIndices.size(); i++) {
             int pageIndex = pageIndices.get(i);
+            String link = getParams().put("page", Integer.toString(pageIndex)).toString();
             pageLinks.add(new LinkInfo(
-                            getLink(pageIndex),
+                            link,
                             Integer.toString(pageIndex + 1),
                             pageIndex == thisPageIndex));
             if (i + 1 < pageIndices.size() && pageIndices.get(i + 1) != pageIndex + 1) {
@@ -94,31 +101,18 @@ public class Pagination {
 
     }
 
-    private String getLink(int pageIndex) {
-        return "page=" + pageIndex
-                + "&size=" + page.getSize()
-                + sortParams()
-                + (!searchPattern.isBlank() ? "&search=" + searchPattern : "");
-    }
-
-    private String sortParams() {
-        StringBuilder sb = new StringBuilder();
-        for (Sort.Order order: page.getSort()) {
-            sb.append("&sort=");
-            sb.append(order.getProperty());
-            sb.append(",");
-            sb.append(order.getDirection().toString().toLowerCase());
-        }
-        return sb.toString();
-    }
-
     public boolean hasSorting(String property, String direction) {
-        String pattern = "&sort=" + property.toLowerCase()
-                + (!direction.isBlank() ? "," + direction.toLowerCase() : "");
-        return sortAsString.toLowerCase().contains(pattern);
+        String pattern = property + "," + (!direction.isBlank() ? direction : "");
+        return Arrays.stream(params.sort()).filter(v -> v.startsWith(pattern)).count() > 0;
     }
+
     public boolean hasSorting(String property) {
         return hasSorting(property, "");
+    }
+
+    public String sortSwitchingLink(String fieldName) {
+        String direction = (hasSorting(fieldName, "asc")) ? "desc" : "asc";
+        return params.put("sort", fieldName + "," + direction).toString();
     }
 
     @Setter
@@ -150,19 +144,19 @@ public class Pagination {
 
     @Getter
     public static class Params {
-        private final Map<String, String> paramsMap;
+        private final MultiValueMap<String, String> paramsMap;
 
-        public Params(Map<String, String> paramsAsMap) {
-            this.paramsMap = new HashMap(paramsAsMap);
+        public Params(MultiValueMap<String, String> paramsAsMap) {
+            this.paramsMap = new LinkedMultiValueMap<>(paramsAsMap);
         }
 
-        public static Params of(Map<String, String> paramsAsMap) {
+        public static Params of(MultiValueMap<String, String> paramsAsMap) {
             return new Params(paramsAsMap);
         }
 
         public Params put(String name, String value) {
             Params newInstance = new Params(this.getParamsMap());
-            newInstance.getParamsMap().put(name, value);
+            newInstance.getParamsMap().put(name, List.of(value));
             return newInstance;
         }
 
@@ -172,16 +166,61 @@ public class Pagination {
             return newInstance;
         }
 
+        public boolean contains(String name) {
+            return getParamsMap().containsKey(name);
+        }
+
+        public String searchPattern() {
+            String value = getParamsMap().getFirst("search");
+            if (value == null) {
+                value = "";
+            }
+            return value;
+        }
+
+        public int pageIndex() {
+            String value = getParamsMap().getFirst("page");
+            if (value == null) {
+                value = "0";
+            }
+            return Integer.parseInt(value);
+        }
+
+        public String[] sort() {
+            List<String> value = getParamsMap().get("sort");
+            if (value != null) {
+                return value.toArray(new String[0]);
+            } else {
+                return new String[0];
+            }
+        }
+
+        public String sortAsString() {
+            List<String> value = getParamsMap().get("sort");
+            if (value != null) {
+                return String.join("&", value);
+            } else {
+                return "";
+            }
+        }
+
+        public int pageSize() {
+            String value = getParamsMap().getFirst("size");
+            if (value == null) {
+                value = "0";
+            }
+            return Integer.parseInt(value);
+        }
+
         @Override
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            getParamsMap().forEach((k, v) -> {
-                if (sb.length() != 0) {
-                    sb.append("&");
+            List<String> pairs = new LinkedList<>();
+            getParamsMap().forEach((k, listOfV) -> {
+                for (String v : listOfV) {
+                    pairs.add(k + "=" + v);
                 }
-                sb.append(k + "=" + v);
             });
-            return sb.toString();
+            return String.join("&", pairs);
         }
 
         @Override

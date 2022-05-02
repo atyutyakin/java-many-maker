@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pro.alxerxc.menuMaker.entity.Product;
@@ -40,15 +41,18 @@ public class ProductController {
 
     @GetMapping(value = {"/all", ""})
     public String showAllProducts(
-                @RequestParam(value = "search", required = false, defaultValue = "") String searchPattern,
-                @RequestParam(value = "page", required = false, defaultValue = "0") int pageIndex,
-                @RequestParam(value = "size", required = false, defaultValue = "0") int size,
-                @RequestParam(value = "sort", required = false, defaultValue = "name,asc") String[] sort,
+                @RequestParam MultiValueMap<String, String> allRequestParams,
                 Model model) {
-        Page<Product> productsPage = productService.getProductsPage(searchPattern, pageIndex,
-                actualPageSize(size), Pagination.sort(sort));
+        Pagination.Params params = Pagination.Params.of(allRequestParams);
+        if (!params.contains("sort")) {
+            params = params.put("sort", "id,asc");
+        }
+
+        Page<Product> productsPage = productService.getProductsPage(params.searchPattern(), params.pageIndex(),
+                actualPageSize(params.pageSize()), Pagination.sort(params.sort()));
+
         model.addAttribute("products", productsPage.getContent());
-        model.addAttribute("pagination", Pagination.of(productsPage, searchPattern, maxPaginationLinks));
+        model.addAttribute("pagination", Pagination.of(productsPage, params, maxPaginationLinks));
         return INDEX_VIEW;
     }
 
