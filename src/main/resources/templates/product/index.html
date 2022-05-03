@@ -7,59 +7,63 @@
 </head>
 <body>
     <div class="container" th:fragment="content">
-        <h3>Products</h3>
-        <a class="float-end btn btn-light" th:href="@{/products/add}"><span class="bi-plus-square me-3"></span>Add new product</a>
-        <table class="table table-light table-hover">
-            <thead class="table-info">
-                <tr>
-                    <th>ID
-                        <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('id')}">
-                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('id', 'desc')} ? 'up' : 'down')"
-                                  th:classappend="${pagination.hasSorting('id')} ? 'bg-light border-primary' : ''"></span></a>
-                    </th>
-                    <th>Name
-                        <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('name')}">
-                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('name', 'desc')} ? 'up' : 'down')"
-                                  th:classappend="${pagination.hasSorting('name')} ? 'bg-light border-primary' : ''"></span></a>
-                    </th>
-                    <th>Description</th>
-                    <th>Cal.
-                        <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('nutrientsInfo.calories')}">
-                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.calories', 'desc')} ? 'up' : 'down')"
-                                  th:classappend="${pagination.hasSorting('nutrientsInfo.calories')} ? 'bg-light border-primary' : ''"></span></a>
-                    <th>Fat
-                        <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('nutrientsInfo.fats')}">
-                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.fats', 'desc')} ? 'up' : 'down')"
-                                  th:classappend="${pagination.hasSorting('nutrientsInfo.fats')} ? 'bg-light border-primary' : ''"></span></a>
-                    </th>
-                    <th>Carb.
-                        <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('nutrientsInfo.carbohydrates')}">
-                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.carbohydrates', 'desc')} ? 'up' : 'down')"
-                                  th:classappend="${pagination.hasSorting('nutrientsInfo.carbohydrates')} ? 'bg-light border-primary' : ''"></span></a>
-                    </th>
-                    <th>Prot.
-                        <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('nutrientsInfo.proteins')}">
-                            <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.proteins', 'desc')} ? 'up' : 'down')"
-                                  th:classappend="${pagination.hasSorting('nutrientsInfo.proteins')} ? 'bg-light border-primary' : ''"></span></a>
-                    </th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="product : ${products}" th:object="${product}">
-                    <td th:text="*{id}"></td>
-                    <td th:text="*{name}"></td>
-                    <td th:text="*{description}"></td>
-                    <td th:text="*{nutrientsInfo.calories}"></td>
-                    <td th:text="*{nutrientsInfo.fats}"></td>
-                    <td th:text="*{nutrientsInfo.carbohydrates}"></td>
-                    <td th:text="*{nutrientsInfo.proteins}"></td>
-                    <td th:replace="fragments/table :: rowActions ('/products')">Here goes actions</td>
-                </tr>
-            </tbody>
-        </table>
-        <nav th:replace="fragments/table :: pagination ('/products')"></nav>
-        <div th:replace="fragments/table :: deleteModalDialog"></div>
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div th:replace="fragments/table :: header ('Product', '/products')"></div>
+                <table class="table table-light table-hover">
+                    <thead class="table-info">
+                        <tr>
+                            <th>ID
+                                <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('id')}">
+                                    <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('id', 'desc')} ? 'up' : 'down')"
+                                          th:classappend="${pagination.hasSorting('id')} ? 'bg-light border-primary' : ''"></span></a>
+                            </th>
+                            <th>Name
+                                <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('name')}">
+                                    <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('name', 'desc')} ? 'up' : 'down')"
+                                          th:classappend="${pagination.hasSorting('name')} ? 'bg-light border-primary' : ''"></span></a>
+                            </th>
+                            <th>Description</th>
+                            <th>Cal.
+                                <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('nutrientsInfo.calories')}">
+                                    <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.calories', 'desc')} ? 'up' : 'down')"
+                                          th:classappend="${pagination.hasSorting('nutrientsInfo.calories')} ? 'bg-light border-primary' : ''"></span></a>
+                            <th>Fat
+                                <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('nutrientsInfo.fats')}">
+                                    <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.fats', 'desc')} ? 'up' : 'down')"
+                                          th:classappend="${pagination.hasSorting('nutrientsInfo.fats')} ? 'bg-light border-primary' : ''"></span></a>
+                            </th>
+                            <th>Carb.
+                                <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('nutrientsInfo.carbohydrates')}">
+                                    <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.carbohydrates', 'desc')} ? 'up' : 'down')"
+                                          th:classappend="${pagination.hasSorting('nutrientsInfo.carbohydrates')} ? 'bg-light border-primary' : ''"></span></a>
+                            </th>
+                            <th>Prot.
+                                <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('nutrientsInfo.proteins')}">
+                                    <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('nutrientsInfo.proteins', 'desc')} ? 'up' : 'down')"
+                                          th:classappend="${pagination.hasSorting('nutrientsInfo.proteins')} ? 'bg-light border-primary' : ''"></span></a>
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="product : ${products}" th:object="${product}">
+                            <td th:text="*{id}"></td>
+                            <td th:text="*{name}"></td>
+                            <td th:text="*{description}"></td>
+                            <td th:text="*{nutrientsInfo.calories}"></td>
+                            <td th:text="*{nutrientsInfo.fats}"></td>
+                            <td th:text="*{nutrientsInfo.carbohydrates}"></td>
+                            <td th:text="*{nutrientsInfo.proteins}"></td>
+                            <td th:replace="fragments/table :: rowActions ('/products')">Here goes actions</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <nav th:replace="fragments/table :: pagination ('/products')"></nav>
+                <div th:replace="fragments/table :: deleteModalDialog"></div>
+
+            </div>
+        </div>
     </div>
 </body>
 </html>
