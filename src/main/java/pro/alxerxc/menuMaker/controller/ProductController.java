@@ -48,7 +48,7 @@ public class ProductController {
             params = params.put("sort", "id,asc");
         }
 
-        Page<Product> productsPage = productService.getProductsPage(params.searchPattern(), params.pageIndex(),
+        Page<Product> productsPage = productService.findPage(params.searchPattern(), params.pageIndex(),
                 actualPageSize(params.pageSize()), Pagination.sort(params.sort()));
 
         model.addAttribute("products", productsPage.getContent());

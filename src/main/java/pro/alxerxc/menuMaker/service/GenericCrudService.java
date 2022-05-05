@@ -2,9 +2,14 @@ package pro.alxerxc.menuMaker.service;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pro.alxerxc.menuMaker.entity.Persistable;
+import pro.alxerxc.menuMaker.repository.GeneralPageableRepository;
 
+import javax.el.MethodNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -21,6 +26,16 @@ public class GenericCrudService<E extends Persistable<ID>, ID> {
 
     public List<E> findAll(){
         return repository.findAll();
+    }
+
+    public Page<E> findPage(String searchString, int pageIndex, int size, Sort sort) {
+        PageRequest request = PageRequest.of(pageIndex, size, sort);
+        if (getRepository() instanceof GeneralPageableRepository) {
+            //noinspection unchecked
+            return ((GeneralPageableRepository<E>) getRepository()).findByNameContainingAllIgnoreCase(searchString, request);
+        } else {
+            throw new MethodNotFoundException("repository is not an instance of GeneralPageableRepository and doesn't support pagination");
+        }
     }
 
     public E findById(ID id) {

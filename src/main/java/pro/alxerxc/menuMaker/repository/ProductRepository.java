@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import pro.alxerxc.menuMaker.entity.Product;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, GeneralPageableRepository<Product> {
 
 }

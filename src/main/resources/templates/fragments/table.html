@@ -101,9 +101,7 @@
                         $(document).ready(function() {
                             var activateSearch = function(e) {
                                 var href = $('#search-button').data('href') + '&search=' + $('#search-pattern').val();
-                                href = decodeURIComponent(href);
-                                alert(href);
-                                window.location.href = href;
+                                window.location.href = decodeURIComponent(href);
                             }
                             $('#search-button').on('click', activateSearch);
                             $('#search-pattern').on('keyup', function(e) {
