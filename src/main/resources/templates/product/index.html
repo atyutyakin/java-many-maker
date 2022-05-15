@@ -47,7 +47,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="product : ${products}" th:object="${product}">
+                        <tr th:each="product : ${entities}" th:object="${product}">
                             <td th:text="*{id}"></td>
                             <td th:text="*{name}"></td>
                             <td th:text="*{description}"></td>

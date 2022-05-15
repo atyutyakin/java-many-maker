@@ -1,5 +1,6 @@
 package pro.alxerxc.menuMaker.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,14 +9,17 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Recipe implements Persistable<Long>{
+public class Recipe implements Persistable<Long> {
 
     @Id
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -30,4 +34,9 @@ public class Recipe implements Persistable<Long>{
     @Embedded
     @NotNull
     private NutrientsInfo nutrientsInfo;
+
+    @ElementCollection
+    @CollectionTable(name = "recipe_items")
+    @OrderColumn(name = "line_no")
+    private List<RecipeItem> ingredients = new ArrayList<>();
 }

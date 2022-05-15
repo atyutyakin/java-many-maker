@@ -1,15 +1,13 @@
 package pro.alxerxc.menuMaker.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.Instant;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +19,7 @@ import java.util.Objects;
 public class Product implements Persistable<Long>{
 
     @Id
+    //@Setter(AccessLevel.NONE) // problems in creating object from post form
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -31,6 +30,12 @@ public class Product implements Persistable<Long>{
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
+
+    @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP")
+    private Instant createdAt;
+
+    @Column(name = "modified_at", columnDefinition = "TIMESTAMP")
+    private Instant modifiedAt;
 
     @Embedded
     @NotNull

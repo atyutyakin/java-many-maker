@@ -1,9 +1,5 @@
 package pro.alxerxc.menuMaker.controller;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
@@ -11,102 +7,54 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pro.alxerxc.menuMaker.entity.Product;
 import pro.alxerxc.menuMaker.service.ProductService;
-import pro.alxerxc.menuMaker.support.Pagination;
 
 import javax.validation.Valid;
 
 @Controller
-@ConfigurationProperties(prefix = "pro.alxerxc.menu-maker.controller")
 @RequestMapping("/products")
 public class ProductController {
-    private static final String REDIRECT_TO_INDEX_VIEW = "redirect:/products/all";
-    private static final String INDEX_VIEW = "/product/index";
-    private static final String EDIT_VIEW = "/product/edit";
 
-    private static final String VIEW_VIEW = "/product/view";
-
-    @Getter
-    @Setter
-    private int defaultPageSize = 15;
-
-    @Getter
-    @Setter
-    private int maxPaginationLinks = 10;
-
-    private final ProductService productService;
+    private GenericCrudController<Product, Long> crudController;
 
     public ProductController(ProductService productService) {
-        this.productService = productService;
+        this.crudController = new GenericCrudController<>(productService, "product", "products");
     }
 
     @GetMapping(value = {"/all", ""})
     public String showAllProducts(
                 @RequestParam MultiValueMap<String, String> allRequestParams,
                 Model model) {
-        Pagination.Params params = Pagination.Params.of(allRequestParams);
-        if (!params.contains("sort")) {
-            params = params.put("sort", "id,asc");
-        }
-
-        Page<Product> productsPage = productService.findPage(params.searchPattern(), params.pageIndex(),
-                actualPageSize(params.pageSize()), Pagination.sort(params.sort()));
-
-        model.addAttribute("products", productsPage.getContent());
-        model.addAttribute("pagination", Pagination.of(productsPage, params, maxPaginationLinks));
-        return INDEX_VIEW;
+        return crudController.showAllEntities(allRequestParams, model);
     }
 
     @GetMapping("/add")
-    public String showCreateForm(Product user, Model model) {
-        setIsNew(model);
-        return EDIT_VIEW;
+    public String showCreateForm(Product product, BindingResult result,  Model model) {
+        return crudController.showNewEntityForm(product, result, model);
     }
 
     @GetMapping("/{id}")
     public String showProductDetails(@PathVariable("id") long id, Model model) {
-        model.addAttribute("product", productService.findById(id));
-        System.out.println("reached this");
-        return VIEW_VIEW;
+        return crudController.showDetailsForm(id, model);
     }
 
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
-        Product product = productService.findById(id);
-        model.addAttribute("product", product);
-        return EDIT_VIEW;
+        return crudController.showUpdateForm(id, model);
     }
 
     @PostMapping("/add")
-    public String addUser(@Valid Product product, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            setIsNew(model);
-            return EDIT_VIEW;
-        }
-        productService.add(product);
-        return REDIRECT_TO_INDEX_VIEW;
+    public String addProduct(@Valid Product product, BindingResult result, Model model) {
+        return crudController.addNewEntity(product, result, model);
     }
 
     @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable("id") long id, @Valid Product product, BindingResult result, Model model) {
-        product.setId(id);
-        if (result.hasErrors()) {
-            return EDIT_VIEW;
-        }
-        productService.update(product);
-        return REDIRECT_TO_INDEX_VIEW;
+    public String updateProduct(@PathVariable("id") long id, @Valid Product product, BindingResult result, Model model) {
+        return crudController.updateExistingEntity(id, product, result, model);
     }
 
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable("id") long id, Model model) {
-        productService.deleteById(id);
-        return REDIRECT_TO_INDEX_VIEW;
+        return crudController.deleteEntity(id, model);
     }
 
-    private void setIsNew(Model model) {
-        model.addAttribute("isNew", Boolean.TRUE);
-    }
-
-    private int actualPageSize(int size) {
-        return (size != 0) ? size : defaultPageSize;
-    }
 }

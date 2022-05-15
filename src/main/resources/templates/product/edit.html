@@ -6,7 +6,7 @@
     <title th:fragment="title" th:text="${isNew} ? 'Add New Product' : 'Edit Product'">Add/Edit Product</title>
 </head>
 <body>
-    <div class="container" th:fragment="content" th:object="${product}">
+    <div class="container" th:fragment="content" th:object="${entity}">
         <h3 th:text="${isNew} ? 'Add New Product' : 'Edit Product'">Add/Edit Product</h3>
         <form action="#" method="post"
               th:action="${isNew} ? @{/products/add} : @{/products/update/{id}(id=*{id})}">
@@ -52,7 +52,7 @@
                     <input class="form-control" type="text" th:field="*{nutrientsInfo.proteins}" id="proteins" placeholder="0"/>
                     <span class="form-text text-danger"
                           th:if="${#fields.hasErrors('nutrientsInfo.proteins')}"
-                          th:error="*{nutrientsInfo.proteins}"></span>
+                          th:errors="*{nutrientsInfo.proteins}"></span>
                 </div>
             </div>
             <div class="form-outline mb-3">

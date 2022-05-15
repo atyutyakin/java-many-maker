@@ -7,7 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pro.alxerxc.menuMaker.entity.Persistable;
-import pro.alxerxc.menuMaker.repository.GeneralPageableRepository;
+import pro.alxerxc.menuMaker.repository.GenericPageableRepository;
 
 import javax.el.MethodNotFoundException;
 import javax.transaction.Transactional;
@@ -30,9 +30,9 @@ public class GenericCrudService<E extends Persistable<ID>, ID> {
 
     public Page<E> findPage(String searchString, int pageIndex, int size, Sort sort) {
         PageRequest request = PageRequest.of(pageIndex, size, sort);
-        if (getRepository() instanceof GeneralPageableRepository) {
+        if (getRepository() instanceof GenericPageableRepository) {
             //noinspection unchecked
-            return ((GeneralPageableRepository<E>) getRepository()).findByNameContainingAllIgnoreCase(searchString, request);
+            return ((GenericPageableRepository<E>) getRepository()).findByNameContainingAllIgnoreCase(searchString, request);
         } else {
             throw new MethodNotFoundException("repository is not an instance of GeneralPageableRepository and doesn't support pagination");
         }
@@ -44,22 +44,22 @@ public class GenericCrudService<E extends Persistable<ID>, ID> {
     }
 
     @Transactional
-    public E add(E productToAdd) {
-        if (productToAdd.hasId()) {
+    public E add(E entityToAdd) {
+        if (entityToAdd.hasId()) {
             throw new IllegalArgumentException(repositoryClassName + ": new entity should not have id");
         }
-        return repository.save(productToAdd);
+        return repository.save(entityToAdd);
     }
 
     @Transactional
-    public E update(E productToUpdate) {
-        if (!productToUpdate.hasId()) {
+    public E update(E entityToUpdate) {
+        if (!entityToUpdate.hasId()) {
             throw new IllegalArgumentException(repositoryClassName + ": entity for update should have id");
-        } else if (!repository.existsById(productToUpdate.getId())) {
+        } else if (!repository.existsById(entityToUpdate.getId())) {
             throw new IllegalArgumentException(repositoryClassName + ": entity for update with id " +
-                    productToUpdate.getId() + " not exists");
+                    entityToUpdate.getId() + " not exists");
         }
-        return repository.save(productToUpdate);
+        return repository.save(entityToUpdate);
     }
 
     @Transactional

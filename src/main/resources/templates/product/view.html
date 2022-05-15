@@ -3,10 +3,10 @@
         xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:fragment="title" th:text="${product.name}">Product Details</title>
+    <title th:fragment="title" th:text="${entity.name}">Product Details</title>
 </head>
 <body>
-    <div class="container" th:fragment="content" th:object="${product}">
+    <div class="container" th:fragment="content" th:object="${entity}">
         <h3 class="mb-4" th:text="'Details of ' + *{name}">Product Name</h3>
         <div class="row mb-3">
             <span class="col-lg-2">ID:</span>
