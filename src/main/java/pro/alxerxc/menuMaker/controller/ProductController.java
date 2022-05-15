@@ -53,7 +53,7 @@ public class ProductController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") long id, Model model) {
+    public String deleteProduct(@PathVariable("id") long id, Model model) {
         return crudController.deleteEntity(id, model);
     }
 

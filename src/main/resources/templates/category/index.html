@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+</head>
+<body>
+    <div class="container" th:fragment="content">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div th:replace="fragments/table :: header ('Categories', '/categories')"></div>
+                <table class="table table-light table-hover">
+                    <thead class="table-info">
+                        <tr>
+                            <th>ID
+                                <a th:href="@{/categories/all?} + ${pagination.sortSwitchingLink('id')}">
+                                    <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('id', 'desc')} ? 'up' : 'down')"
+                                          th:classappend="${pagination.hasSorting('id')} ? 'bg-light border-primary' : ''"></span></a>
+                            </th>
+                            <th>Name
+                                <a th:href="@{/categories/all?} + ${pagination.sortSwitchingLink('name')}">
+                                    <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('name', 'desc')} ? 'up' : 'down')"
+                                          th:classappend="${pagination.hasSorting('name')} ? 'bg-light border-primary' : ''"></span></a>
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="category : ${entities}" th:object="${category}">
+                            <td th:text="*{id}"></td>
+                            <td th:text="*{name}"></td>
+                            <td th:replace="fragments/table :: rowActions ('/categories')">Here goes actions</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <nav th:replace="fragments/table :: pagination ('/categories')"></nav>
+                <div th:replace="fragments/table :: deleteModalDialog"></div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

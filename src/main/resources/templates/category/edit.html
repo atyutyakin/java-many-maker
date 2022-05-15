@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:fragment="title" th:text="${isNew} ? 'Add New Category' : 'Edit Category'">Add/Edit Category</title>
+</head>
+<body>
+    <div class="container" th:fragment="content" th:object="${entity}">
+        <h3 th:text="${isNew} ? 'Add New Category' : 'Edit Category'">Add/Edit Category</h3>
+        <form action="#" method="post"
+              th:action="${isNew} ? @{/categories/add} : @{/categories/update/{id}(id=*{id})}">
+            <div class="form-outline mb-3" th:unless="${isNew}">
+                <label class="form-label" for="id">ID</label>
+                <input class="form-control" type="text" th:field="*{id}" id="id" placeholder="ID" disabled/>
+                <span class="form-text text-danger" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></span>
+            </div>
+            <div class="form-outline mb-3">
+                <label class="form-label" for="name">Name</label>
+                <input class="form-control" type="text" th:field="*{name}" id="name" placeholder="Name"/>
+                <span class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            </div>
+            <div class="form-outline mb-3">
+                <input class="btn btn-primary" type="submit" value="Add/Update Category" th:value="${isNew} ? 'Add' : 'Update'"/>
+                <a class="btn btn-secondary" href="#" th:href="@{/categories}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
