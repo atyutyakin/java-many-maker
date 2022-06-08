@@ -30,7 +30,7 @@
                         <tr th:each="category : ${entities}" th:object="${category}">
                             <td th:text="*{id}"></td>
                             <td th:text="*{name}"></td>
-                            <td th:replace="fragments/table :: rowActions ('/categories')">Here goes actions</td>
+                            <td th:replace="fragments/table :: rowActions ('/categories')">Here actions go</td>
                         </tr>
                     </tbody>
                 </table>
