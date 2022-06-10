@@ -24,6 +24,14 @@
             <span class="col-lg-2">Nutrients Info:</span>
             <span class="col-lg-10 border" th:text="*{nutrientsInfo}"></span>
         </div>
+        <div class="row mb-3">
+            <span class="col-lg-2">Created At:</span>
+            <span class="col-lg-10 border" th:text="*{createdAt}"></span>
+        </div>
+        <div class="row mb-3">
+            <span class="col-lg-2">Updated At:</span>
+            <span class="col-lg-10 border" th:text="*{modifiedAt}"></span>
+        </div>
         <a class="btn btn-secondary mb-3" th:href="@{/products}">Back to products list</a>
     </div>
 </body>

@@ -1,5 +1,6 @@
 # Backlog
 
+* Add setting up created_at and updated_at automatically. 
 
 1. Add calculation of NutsInfo for given amount of ingredients.
 2. Add CRUD web interface for editing products and recipes.
@@ -10,11 +11,13 @@
 
 # In progress...
 
-1. Create Recipe class, add there:
-   * a list of recipe items, with product, qty;
-   * mass of prepared dish from given amount of ingredients;
-   * images and preparation steps, as a html page.
-2. Add some tests to project (check persistence) 
+* Publish this on Github
+* Add categories to products.
+* Create Recipe class, add there:
+  * a list of recipe items, with product, qty;
+  * mass of prepared dish from given amount of ingredients;
+  * images and preparation steps, as a html page.
+* Add some tests to project (check persistence) 
 
 # Completed
 
