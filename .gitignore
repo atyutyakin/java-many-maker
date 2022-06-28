@@ -34,3 +34,6 @@ build/
 
 ### my ignores ###
 application-dev.properties
+.mvn
+mvnw
+mvnw.cmd
