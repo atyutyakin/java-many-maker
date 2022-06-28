@@ -23,6 +23,11 @@
                                     <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('name', 'desc')} ? 'up' : 'down')"
                                           th:classappend="${pagination.hasSorting('name')} ? 'bg-light border-primary' : ''"></span></a>
                             </th>
+                            <th>Category
+                                <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('category')}">
+                                    <span th:class="'bi-sort-alpha-' + (${pagination.hasSorting('category', 'desc')} ? 'up' : 'down')"
+                                          th:classappend="${pagination.hasSorting('category')} ? 'bg-light border-primary' : ''"></span></a>
+                            </th>
                             <th>Description</th>
                             <th>Cal.
                                 <a th:href="@{/products/all?} + ${pagination.sortSwitchingLink('nutrientsInfo.calories')}">
@@ -50,6 +55,7 @@
                         <tr th:each="product : ${entities}" th:object="${product}">
                             <td th:text="*{id}"></td>
                             <td th:text="*{name}"></td>
+                            <td th:text="*{category}"></td>
                             <td th:text="*{description}"></td>
                             <td th:text="*{nutrientsInfo.calories}"></td>
                             <td th:text="*{nutrientsInfo.fats}"></td>
