@@ -21,6 +21,15 @@
                 <span class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
             </div>
             <div class="form-outline mb-3">
+                <label class="form-label" for="category">Category</label>
+                <select id="category" th:field="*{category.id}">
+                    <option value="">&lt;No category&gt;</option>
+                    <option th:each="aCategory : ${allCategories}"
+                            th:value="${aCategory.id}" th:text="${aCategory.name}"></option>
+                </select>
+                <span class="form-text text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category.id}"></span>
+            </div>
+            <div class="form-outline mb-3">
                 <label class="form-label" for="description">Description</label>
                 <textarea class="form-control" th:field="*{description}" id="description" placeholder="Description" rows="4"/>
                 <span class="form-text text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>

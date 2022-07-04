@@ -55,7 +55,7 @@
                         <tr th:each="product : ${entities}" th:object="${product}">
                             <td th:text="*{id}"></td>
                             <td th:text="*{name}"></td>
-                            <td th:text="*{category}"></td>
+                            <td th:text="*{category?.name}"></td>
                             <td th:text="*{description}"></td>
                             <td th:text="*{nutrientsInfo.calories}"></td>
                             <td th:text="*{nutrientsInfo.fats}"></td>

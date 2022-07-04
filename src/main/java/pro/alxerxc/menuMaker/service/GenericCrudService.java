@@ -49,7 +49,10 @@ public class GenericCrudService<E extends Persistable<ID>, ID> {
         if (entityToAdd.hasId()) {
             throw new IllegalArgumentException(repositoryClassName + ": new entity should not have id");
         }
-        return repository.save(entityToAdd);
+        doBeforeSave(entityToAdd);
+        E savedEntity = repository.save(entityToAdd);
+        doAfterSave(savedEntity);
+        return savedEntity;
     }
 
     @Transactional
@@ -60,7 +63,10 @@ public class GenericCrudService<E extends Persistable<ID>, ID> {
             throw new IllegalArgumentException(repositoryClassName + ": entity for update with id " +
                     entityToUpdate.getId() + " not exists");
         }
-        return repository.save(entityToUpdate);
+        doBeforeSave(entityToUpdate);
+        E savedEntity = repository.save(entityToUpdate);
+        doAfterSave(savedEntity);
+        return savedEntity;
     }
 
     @Transactional
@@ -68,7 +74,25 @@ public class GenericCrudService<E extends Persistable<ID>, ID> {
         if (!repository.existsById(id)) {
             throw new IllegalArgumentException(repositoryClassName + ": entity for deletion with id " + id + " not exists");
         }
+        doBeforeDelete(id);
         repository.deleteById(id);
+        doAfterDelete(id);
+    }
+
+    protected void doBeforeSave(E entityToSave) {
+
+    }
+
+    protected void doAfterSave(E entityToSave) {
+
+    }
+
+    protected void doBeforeDelete(ID entityIdToDelete) {
+
+    }
+
+    protected void doAfterDelete(ID entityIdToDelete) {
+
     }
 
 }

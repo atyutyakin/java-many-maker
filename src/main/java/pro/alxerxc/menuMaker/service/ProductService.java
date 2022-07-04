@@ -24,4 +24,11 @@ public class ProductService extends GenericCrudService<Product, Long> {
         entityToUpdate.setModifiedAt(Instant.now());
         return super.update(entityToUpdate);
     }
+
+    @Override
+    protected void doBeforeSave(Product entityToSave) {
+        if (entityToSave.getCategory() != null && entityToSave.getCategory().getId() == null) {
+            entityToSave.setCategory(null);
+        }
+    }
 }

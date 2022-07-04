@@ -37,6 +37,10 @@ public class Product implements Persistable<Long>{
     @Column(name = "modified_at", columnDefinition = "TIMESTAMP")
     private Instant modifiedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @Embedded
     @NotNull
     @Valid
